@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--使用 Morphia-->
+
+    <bean id="mongodbUri" class="com.mongodb.MongoClientURI">
+        <constructor-arg index="0" value="${mongo_db_url}"/>
+    </bean>
+
+    <bean id="mongoClient" class="com.mongodb.MongoClient" destroy-method="close">
+        <constructor-arg index="0" ref="mongodbUri"/>
+    </bean>
+
+    <bean id="morphia" class="org.mongodb.morphia.Morphia"/>
+
+    <bean id="datastore" class="org.mongodb.morphia.Datastore" factory-bean="morphia" factory-method="createDatastore">
+        <!--用来连接到MongoDB-->
+        <constructor-arg ref="mongoClient"/>
+        <!--数据库的名字-->
+        <constructor-arg value="${mongo.dbname}"/>
+    </bean>
+
+
+    <bean class="com.homework.common.mongo.MorphiaInit">
+        <constructor-arg ref="morphia"/>
+        <constructor-arg ref="datastore"/>
+        <constructor-arg>
+            <list>
+                <value>com.homework.dao.doc.domain</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <!--使用 spring data mongo-->
+
+    <!--<bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">-->
+        <!--<constructor-arg index="0" ref="mongoClient" />-->
+        <!--<constructor-arg index="1" value="study" />-->
+    <!--</bean>-->
+
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+        <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />-->
+    <!--</bean>-->
+
+</beans>
