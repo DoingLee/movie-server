@@ -15,6 +15,8 @@
         <guava.version>24.0-jre</guava.version>
         <logback.version>1.2.3</logback.version>
         <log4j.version>1.7.25</log4j.version>
+        <spring-aop.version>5.0.1.RELEASE</spring-aop.version>
+        <aspectjweaver.version>1.8.12</aspectjweaver.version>
     </properties>
 
     <parent>
@@ -33,6 +35,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <!--apache commons-->
