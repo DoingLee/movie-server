@@ -6,5 +6,5 @@ target
 *.iml
 
 logs
-
 *.log
+!/appLogRootDir_IS_UNDEFINED/
