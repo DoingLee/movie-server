@@ -5,6 +5,6 @@ target
 
 *.iml
 
-logs
+/logs
 *.log
-appLogRootDir_IS_UNDEFINED
+/appLogRootDir_IS_UNDEFINED
