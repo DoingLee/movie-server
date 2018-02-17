@@ -87,7 +87,10 @@ public class ReturnVo implements Serializable {
     }
 
     public enum BusinessCode {
-        ;
+        PARAMETER_NULL("参数不能为空", 1),
+        USER_ALREADY_EXIST("用户已经存在", 100),
+        USER_NOT_EXIST("用户不存在", 101),
+        PASSWORD_INCORRECT("密码错误", 102);
 
         private final int    code;
         private final String message;

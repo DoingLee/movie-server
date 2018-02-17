@@ -6,4 +6,6 @@ package com.homework.common.constant;
 public class BaseConstant {
     public static final String TOKEN_NAME = "token";
     public static final String COOKIE_PATH = "/";
+
+    public static final String DEFAULT = "暂无";
 }

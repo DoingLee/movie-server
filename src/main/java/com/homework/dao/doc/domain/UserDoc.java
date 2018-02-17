@@ -11,6 +11,7 @@ public class UserDoc {
 
     @Id
     Long userId;
+    String accountId; //用户登录名
     String password;
     String photoUrl;
     String gender;
@@ -22,8 +23,9 @@ public class UserDoc {
     public UserDoc() {
     }
 
-    public UserDoc(Long userId, String password, String photoUrl, String gender, String city, Long birthday, String introduction, Long createTime) {
+    public UserDoc(Long userId, String accountId, String password, String photoUrl, String gender, String city, Long birthday, String introduction, Long createTime) {
         this.userId = userId;
+        this.accountId = accountId;
         this.password = password;
         this.photoUrl = photoUrl;
         this.gender = gender;
@@ -31,6 +33,14 @@ public class UserDoc {
         this.birthday = birthday;
         this.introduction = introduction;
         this.createTime = createTime;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public Long getUserId() {
