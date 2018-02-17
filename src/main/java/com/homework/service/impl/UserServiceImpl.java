@@ -1,8 +1,12 @@
 package com.homework.service.impl;
 
 import com.homework.common.aop.access.WebUser;
+import com.homework.common.bean.BeanConvertUtils;
 import com.homework.common.constant.BaseConstant;
+import com.homework.common.exception.FrontNotifiableRuntimeException;
 import com.homework.controller.vo.ReturnVo;
+import com.homework.controller.vo.UserSaveVo;
+import com.homework.controller.vo.UserVo;
 import com.homework.dao.doc.UserDao;
 import com.homework.dao.doc.domain.UserDoc;
 import com.homework.service.UserService;
@@ -41,14 +45,15 @@ public class UserServiceImpl implements UserService {
 
         //注册用户
         UserDoc userDoc = new UserDoc(Math.abs(new Long(UUID.randomUUID().hashCode())),
-                                     accountId,
-                                     DigestUtils.md5DigestAsHex(password.getBytes()),
-                                     BaseConstant.DEFAULT,
-                                     BaseConstant.DEFAULT,
-                                     BaseConstant.DEFAULT,
-                                     new Long(0),
-                                     BaseConstant.DEFAULT,
-                                     System.currentTimeMillis());
+                                             accountId,
+                                             BaseConstant.DEFAULT,
+                                             DigestUtils.md5DigestAsHex(password.getBytes()),
+                                             BaseConstant.DEFAULT,
+                                             BaseConstant.DEFAULT,
+                                             BaseConstant.DEFAULT,
+                                             new Long(0),
+                                             BaseConstant.DEFAULT,
+                                             System.currentTimeMillis());
         userDao.save(userDoc);
 
         return new ReturnVo.OKVo();
@@ -79,6 +84,35 @@ public class UserServiceImpl implements UserService {
         ReturnVo returnVo = new ReturnVo.OKVo();
         returnVo.setResults(userDoc.getUserId());
         return returnVo;
+    }
+
+    @Override
+    public UserVo getUserInfo(Long userId) {
+        if (null == userId) {
+            throw new FrontNotifiableRuntimeException(ReturnVo.ErrorCode.PARAM_INVALID.getMessage());
+        }
+
+        UserDoc userDoc = userDao.getById(userId);
+        UserVo userVo = BeanConvertUtils.convert(userDoc, UserDoc.class, UserVo.class);
+        return userVo;
+    }
+
+    @Override
+    public boolean saveAccount(UserSaveVo userSaveVo) {
+        if (null == userSaveVo) {
+            throw new FrontNotifiableRuntimeException(ReturnVo.ErrorCode.PARAM_INVALID.getMessage());
+        }
+
+        UserDoc userDoc = userDao.getById(WebUser.getWebUserId());
+        userDoc.setPhotoUrl(userSaveVo.getPhotoUrl());
+        userDoc.setNickName(userSaveVo.getNickName());
+        userDoc.setGender(userSaveVo.getGender());
+        userDoc.setCity(userSaveVo.getCity());
+        userDoc.setBirthday(userSaveVo.getBirthday());
+        userDoc.setIntroduction(userSaveVo.getIntroduction());
+
+        userDao.save(userDoc);
+        return true;
     }
 
 }

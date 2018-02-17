@@ -40,48 +40,52 @@ public class AccessControlAspect {
         HttpServletResponse httpServletResponse = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 
         Cookie[] cookies = httpServletRequest.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (!cookie.getName().equals(BaseConstant.TOKEN_NAME)) {
-                    continue;
-                }
-                String token = cookie.getValue();
-                LogUtils.debug("用户raw token：" + token);
-                String userId = DesUtils.decryptToken(token);
-
-                //token为空
-                if (StringUtils.isEmpty(token)) {
-                    LogUtils.debug("token为空");
-                    cookie.setMaxAge(0); //清除cookie
-                    cookie.setPath(BaseConstant.COOKIE_PATH);
-                    httpServletResponse.addCookie(cookie);
-                    throw new FrontNotifiableRuntimeException("该接口需要登录!");
-                }
-
-                LogUtils.debug("用户token（userId）：" + userId);
-
-                //判断用户是否存在
-                UserDoc userDoc = userDao.getById(Long.parseLong(userId));
-                if (null == userDoc) {
-                    LogUtils.debug("token(userId) " + userId + " 不存在！");
-                    cookie.setMaxAge(0); //清除cookie
-                    cookie.setPath(BaseConstant.COOKIE_PATH);
-                    httpServletResponse.addCookie(cookie);
-                    throw new FrontNotifiableRuntimeException("该接口需要登录!");
-                }
-
-                //用户存在，保存用户信息到ThreadLocal
-                LogUtils.debug("token验证通过");
-                WebUser.setWebUser(new WebUser(userDoc.getUserId()));
-                return;
-            }
-        }
 
         //cookie中无token
+        if (null == cookies || cookies.length == 0) {
+            LogUtils.debug("cookie中无token");
+            throw new FrontNotifiableRuntimeException("该接口需要登录!");
+        }
+
+        for (Cookie cookie : cookies) {
+            if (!cookie.getName().equals(BaseConstant.TOKEN_NAME)) {
+                continue;
+            }
+            String token = cookie.getValue();
+            LogUtils.debug("用户raw token：" + token);
+            String userId = DesUtils.decryptToken(token);
+
+            //token为空
+            if (StringUtils.isEmpty(token)) {
+                LogUtils.debug("token为空");
+                cookie.setMaxAge(0); //清除cookie
+                cookie.setPath(BaseConstant.COOKIE_PATH);
+                httpServletResponse.addCookie(cookie);
+                throw new FrontNotifiableRuntimeException("该接口需要登录!");
+            }
+
+            LogUtils.debug("用户token（userId）：" + userId);
+
+            //判断用户是否存在
+            UserDoc userDoc = userDao.getById(Long.parseLong(userId));
+            if (null == userDoc) {
+                LogUtils.debug("token(userId) " + userId + " 不存在！");
+                cookie.setMaxAge(0); //清除cookie
+                cookie.setPath(BaseConstant.COOKIE_PATH);
+                httpServletResponse.addCookie(cookie);
+                throw new FrontNotifiableRuntimeException("该接口需要登录!");
+            }
+
+            //用户存在，保存用户信息到ThreadLocal
+            LogUtils.debug("token验证通过");
+            WebUser.setWebUser(new WebUser(userDoc.getUserId()));
+            return;
+        }
+
         LogUtils.debug("cookie中无token");
         throw new FrontNotifiableRuntimeException("该接口需要登录!");
-    }
 
+    }
 
 
 }

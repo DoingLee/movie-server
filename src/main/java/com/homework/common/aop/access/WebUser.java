@@ -20,6 +20,14 @@ public class WebUser {
         webUserThreadLocal.set(webUser);
     }
 
+    public static Long getWebUserId() {
+        WebUser user = webUserThreadLocal.get();
+        if (null == user) {
+            return null;
+        }
+        return user.getUserId();
+    }
+
     public Long getUserId() {
         return userId;
     }
