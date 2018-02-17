@@ -8,3 +8,5 @@ target
 /logs
 *.log
 /appLogRootDir_IS_UNDEFINED
+
+*.tar.gz
