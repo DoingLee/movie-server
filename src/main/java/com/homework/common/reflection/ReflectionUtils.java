@@ -1,17 +1,10 @@
 package com.homework.common.reflection;
 
-
-
 import com.homework.common.exception.SystemErrorRuntimeException;
 import com.homework.common.text.StringCommonUtils;
 
 import java.lang.reflect.Method;
 
-
-/*
- * @author hzfjd@corp.netease.com
- * @date 2012-5-8
- */
 public class ReflectionUtils {
 
     public static Method getPropertyMethod(Class clz, String propertyName) {

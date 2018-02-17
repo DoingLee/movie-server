@@ -20,14 +20,14 @@ public class MovieCommentDaoTest extends BaseTest {
     @Test
     public void insertOrUpdate() {
         for (int i = 0; i < 10; i++) {
-            movieCommentDao.save(new MovieCommentDoc(new Long(UUID.randomUUID().hashCode()),
+            movieCommentDao.save(new MovieCommentDoc(Math.abs(new Long(UUID.randomUUID().hashCode())),
                                                             new Long(121),
                                                             "moviename" + i,
-                                                            new Long(11),
+                                                            new Long(1712560897),
                                                             "评论" + i,
-                                                            new Long(111),
-                                                            new Long(1),
-                                                            new Long(2),
+                                                            System.currentTimeMillis(),
+                                                            new Long(i),
+                                                            new Long(i),
                                                             System.currentTimeMillis()));
         }
     }
