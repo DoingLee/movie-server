@@ -145,7 +145,9 @@ public class MovieCommentServiceImpl implements MovieCommentService {
         }
 
         MovieCommentVo myMovieCommentVo = BeanConvertUtils.convert(myMovieCommentDocList.get(0), MovieCommentDoc.class, MovieCommentVo.class);
-        myMovieCommentVo.setNickName(userDao.getById(myMovieCommentVo.getUserId()).getNickName());
+        UserDoc userDoc = userDao.getById(myMovieCommentVo.getUserId());
+        myMovieCommentVo.setNickName(userDoc.getNickName());
+        myMovieCommentVo.setAccountId(userDoc.getAccountId());
 
         List<MovieCommentVo> movieCommentVoList = ListUtils.union(Collections.singletonList(myMovieCommentVo), otherMovieCommentVoList);
         return movieCommentVoList;
