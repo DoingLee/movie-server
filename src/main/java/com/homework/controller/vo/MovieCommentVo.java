@@ -14,11 +14,12 @@ public class MovieCommentVo {
     Long userId;
 
     String nickName;
+    String accountId;
 
     public MovieCommentVo() {
     }
 
-    public MovieCommentVo(Long commentId, Long movieId, String movieName, String commentContent, Long commentTime, Long watch, Long vote, Long userId, String nickName) {
+    public MovieCommentVo(Long commentId, Long movieId, String movieName, String commentContent, Long commentTime, Long watch, Long vote, Long userId, String nickName, String accountId) {
         this.commentId = commentId;
         this.movieId = movieId;
         this.movieName = movieName;
@@ -28,6 +29,7 @@ public class MovieCommentVo {
         this.vote = vote;
         this.userId = userId;
         this.nickName = nickName;
+        this.accountId = accountId;
     }
 
     public Long getCommentId() {
@@ -100,5 +102,13 @@ public class MovieCommentVo {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 }

@@ -52,6 +52,13 @@ public interface MovieCommentService {
     List<MovieCommentVo> getMovieComment(Long movieId);
 
     /**
+     * 获取个人所有影评
+     *
+     * @return
+     */
+    List<MovieCommentVo> getAllMyMovieComment();
+
+    /**
      * 分页获取热门影评（按点赞数倒序排列）
      *
      * @param pageIndex 0, 1, 2 ...

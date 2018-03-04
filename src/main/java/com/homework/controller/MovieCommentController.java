@@ -74,6 +74,22 @@ public class MovieCommentController {
     }
 
     /**
+     * 获取所有个人影评
+     *
+     * @return
+     */
+    @AccessControl
+    @ResponseBody
+    @RequestMapping(path = "/my", method = RequestMethod.GET)
+    public ReturnVo getAllMyMovieComment() {
+        List<MovieCommentVo> movieCommentVoList = movieCommentService.getAllMyMovieComment();
+
+        ReturnVo returnVo = new ReturnVo.OKVo();
+        returnVo.setResults(movieCommentVoList);
+        return returnVo;
+    }
+
+    /**
      * 修改我的影评
      *
      * @return

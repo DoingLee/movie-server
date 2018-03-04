@@ -10,6 +10,7 @@ import com.homework.controller.vo.ReturnVo;
 import com.homework.dao.doc.MovieCommentDao;
 import com.homework.dao.doc.UserDao;
 import com.homework.dao.doc.domain.MovieCommentDoc;
+import com.homework.dao.doc.domain.UserDoc;
 import com.homework.service.MovieCommentService;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,8 +133,9 @@ public class MovieCommentServiceImpl implements MovieCommentService {
         List<MovieCommentVo> otherMovieCommentVoList = new ArrayList<MovieCommentVo>(otherMovieCommentDocList.size());
         for (MovieCommentDoc otherMovieCommentDoc : otherMovieCommentDocList) {
             MovieCommentVo movieCommentVo = BeanConvertUtils.convert(otherMovieCommentDoc, MovieCommentDoc.class, MovieCommentVo.class);
-            String nickName = userDao.getById(movieCommentVo.getUserId()).getNickName();
-            movieCommentVo.setNickName(nickName);
+            UserDoc userDoc = userDao.getById(movieCommentVo.getUserId());
+            movieCommentVo.setNickName(userDoc.getNickName());
+            movieCommentVo.setAccountId(userDoc.getAccountId());
 
             otherMovieCommentVoList.add(movieCommentVo);
         }
@@ -147,6 +149,27 @@ public class MovieCommentServiceImpl implements MovieCommentService {
 
         List<MovieCommentVo> movieCommentVoList = ListUtils.union(Collections.singletonList(myMovieCommentVo), otherMovieCommentVoList);
         return movieCommentVoList;
+    }
+
+    @Override
+    public List<MovieCommentVo> getAllMyMovieComment() {
+        List<String> myCommentFilter = new ArrayList<String>(1);
+        myCommentFilter.add("userId =");
+        List<MovieCommentDoc> myCommentDocList = movieCommentDao.getByCondition(myCommentFilter, WebUser.getWebUserId());
+
+        //转换为MovieCommentVo列表
+        List<MovieCommentVo> myMovieCommentVoList = new ArrayList<MovieCommentVo>(myCommentDocList.size());
+        for (MovieCommentDoc otherMovieCommentDoc : myCommentDocList) {
+            MovieCommentVo movieCommentVo = BeanConvertUtils.convert(otherMovieCommentDoc, MovieCommentDoc.class, MovieCommentVo.class);
+
+            UserDoc userDoc = userDao.getById(movieCommentVo.getUserId());
+            movieCommentVo.setNickName(userDoc.getNickName());
+            movieCommentVo.setAccountId(userDoc.getAccountId());
+
+            myMovieCommentVoList.add(movieCommentVo);
+        }
+
+        return myMovieCommentVoList;
     }
 
     @Override
